@@ -1,6 +1,6 @@
 name: loading_layout
 description: The easy way to show loading indicators in your Flutter app. Less boilerplate code, highly customizable.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/TinhHuynh/loading_layout
 
 environment:
