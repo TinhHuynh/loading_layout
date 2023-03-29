@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_layout/loading_layout.dart';
 
@@ -18,19 +19,26 @@ class _SimplePageState extends State<SimplePage> {
           displayDuration: 3000,
           dismissOnTap: true,
           onDismissTap: () {
-            print('OnDismiss');
+            if (kDebugMode) {
+              print('OnDismiss');
+            }
             setState(() {
               isLoading = false;
             });
           },
           onDisplayTimeOut: () {
-            isLoading = false; setState(() {
+            isLoading = false;
+            setState(() {
               isLoading = false;
             });
-            print('onDisplayTimeOut');
+            if (kDebugMode) {
+              print('onDisplayTimeOut');
+            }
           },
           onToggleChanged: (val) {
-            print('onToggleChanged $val');
+            if (kDebugMode) {
+              print('onToggleChanged $val');
+            }
           },
           isLoading: isLoading,
           child: Scaffold(
