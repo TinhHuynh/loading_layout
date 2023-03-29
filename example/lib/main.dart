@@ -44,7 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (context) => const SimplePage()));
                   },
                   child: const Text('Simple')),
-
               ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(

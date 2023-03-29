@@ -15,6 +15,7 @@ class LoadingController extends ValueNotifier<bool> {
   /// Duration of displaying [LoadingLayout]. Null value represents loading
   /// indeterminately.
   final int? displayDuration;
+
   /// The callback fired when non-null `displayDuration` runs out.
   final Function? onDisplayTimeout;
 
