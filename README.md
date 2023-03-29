@@ -23,58 +23,89 @@ import 'package:loading_widget/loading_widget.dart';
 ## How to use
 
 ```dart
-class HomePage extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:loading_layout/loading_layout.dart';
 
-  bool isLoading = true;
+class SimplePage extends StatefulWidget {
+  const SimplePage({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    Future.delayed(const Duration(seconds: 5))
-        .then((value) =>
-    {setState(() {
-      isLoading = false;
-    })});
-    super.initState();
-  }
+  State<SimplePage> createState() => _SimplePageState();
+}
+
+class _SimplePageState extends State<SimplePage> {
+  var isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // wrap your screen or widget with LoadWidget,
-      // the widget will expand as large as possible, depending on its child's size.
-      body: LoadingWidget(
-          isLoading: isLoading, // or true
-          // Optionally, you can define your custom indicator.
-          // Otherwise the widget will show CircularProgressIndicator.
-          indicator: YourCustomeIndicator(),
-          child: YourPage()
-      ),
+    return SafeArea(
+      child: LoadingLayout(
+          displayDuration: 3000,
+          dismissOnTap: true,
+          onDismissTap: () {
+            print('OnDismiss');
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onDisplayTimeOut: () {
+            isLoading = false; setState(() {
+              isLoading = false;
+            });
+            print('onDisplayTimeOut');
+          },
+          onToggleChanged: (val) {
+            print('onToggleChanged $val');
+          },
+          isLoading: isLoading,
+          child: Scaffold(
+            body: Container(),
+            floatingActionButton: FloatingActionButton(
+                child: Icon(isLoading ? Icons.toggle_off : Icons.toggle_on),
+                onPressed: () {
+                  setState(() {
+                    isLoading = !isLoading;
+                  });
+                }),
+          )),
     );
   }
 }
 ```
 
-* Use LoadingController
+* Use loading_controller
 
 ```dart
-class HomePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:loading_layout/loading_controller.dart';
+import 'package:loading_layout/loading_layout.dart';
 
-  final LoadingController _loadingController = LoadingController();
+class WithControllerPage extends StatelessWidget {
+  WithControllerPage({Key? key}) : super(key: key);
+  final LoadingController _controller = LoadingController(
+    displayDuration: 3000,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LoadingWidget(
-          // Register the controller.
-          controller: _loadingController,
-          child: YourPage(),
-          ...
+    return SafeArea(
+      child: Scaffold(
+        body: LoadingLayout.withController(
+          controller: _controller,
+          dismissOnTap: true,
+          child: Container(),
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: ValueListenableBuilder(
+              valueListenable: _controller,
+              builder: (context, isLoading, _) =>
+                  Icon(isLoading ? Icons.toggle_off : Icons.toggle_on),
+            ),
+            onPressed: () {
+              _controller.value = !_controller.value;
+            }),
       ),
     );
-  }
-  
-  toggleLoading(bool value){
-    _loadingController.value = value;
   }
 }
 ```
